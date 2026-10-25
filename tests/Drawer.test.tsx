@@ -40,6 +40,35 @@ describe("Drawer", () => {
     expect(container.querySelector("svg.lucide-bell")).not.toBeNull();
   });
 
+  it("uses the default width cap, and widthClassName replaces it", () => {
+    const { rerender } = render(
+      <Drawer isOpen onClose={vi.fn()} title="Test">
+        <p>Body</p>
+      </Drawer>,
+    );
+    expect(screen.getByRole("dialog")).toHaveClass("sm:max-w-md");
+    rerender(
+      <Drawer isOpen onClose={vi.fn()} title="Test" widthClassName="sm:max-w-lg">
+        <p>Body</p>
+      </Drawer>,
+    );
+    expect(screen.getByRole("dialog")).toHaveClass("sm:max-w-lg");
+    expect(screen.getByRole("dialog")).not.toHaveClass("sm:max-w-md");
+  });
+
+  it("closeButtonClassName is added to the Close button without dropping its defaults", () => {
+    render(
+      <Drawer isOpen onClose={vi.fn()} title="Test" closeButtonClassName="min-h-10 min-w-10">
+        <p>Body</p>
+      </Drawer>,
+    );
+    expect(screen.getByRole("button", { name: "Close" })).toHaveClass(
+      "min-h-10",
+      "min-w-10",
+      "text-muted",
+    );
+  });
+
   it("calls onClose on Escape and on the Close button", () => {
     const onClose = vi.fn();
     render(

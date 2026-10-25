@@ -2,7 +2,10 @@
 
 import { X, type LucideIcon } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { DRAWER_TRANSITION_DURATION_MS as TRANSITION_DURATION_MS } from "./constants";
+import {
+  DEFAULT_DRAWER_WIDTH_CLASS,
+  DRAWER_TRANSITION_DURATION_MS as TRANSITION_DURATION_MS,
+} from "./constants";
 
 // Right-side slide-over panel — the "full screen right hand side" pattern
 // (full width on mobile, capped on larger screens, full height). Stays
@@ -13,6 +16,8 @@ export function Drawer({
   onClose,
   title,
   icon: Icon,
+  widthClassName = DEFAULT_DRAWER_WIDTH_CLASS,
+  closeButtonClassName,
   children,
 }: {
   isOpen: boolean;
@@ -20,6 +25,10 @@ export function Drawer({
   title: string;
   // Shown in a tinted chip beside the title.
   icon?: LucideIcon;
+  // Replaces the default width cap, e.g. "sm:max-w-lg".
+  widthClassName?: string;
+  // Added to the close button, e.g. "min-h-10 min-w-10" for a larger tap target.
+  closeButtonClassName?: string;
   children: ReactNode;
 }) {
   const [mounted, setMounted] = useState(isOpen);
@@ -79,7 +88,7 @@ export function Drawer({
         aria-modal="true"
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
-        className={`fixed inset-y-0 right-0 flex w-full flex-col border-l border-border-subtle bg-surface-elevated shadow-lg transition-transform duration-200 sm:max-w-md ${
+        className={`fixed inset-y-0 right-0 flex w-full flex-col border-l border-border-subtle bg-surface-elevated shadow-lg transition-transform duration-200 ${widthClassName} ${
           visible ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -96,7 +105,7 @@ export function Drawer({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="rounded p-1 text-muted hover:bg-surface-hover hover:text-foreground"
+            className={`inline-flex items-center justify-center rounded p-1 text-muted hover:bg-surface-hover hover:text-foreground ${closeButtonClassName ?? ""}`}
           >
             <X aria-hidden className="h-4 w-4" />
           </button>
