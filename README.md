@@ -107,6 +107,18 @@ npm run typecheck   # tsc --noEmit
 npm run build       # tsup -> dist/ (ESM + .d.ts)
 ```
 
+## Updating
+
+Check the latest version with `npm view @kamaldgrt/ui version`, then bump it in the consuming app:
+
+```bash
+npm i @kamaldgrt/ui@latest
+```
+
+While the major version is `0`, a caret range such as `^0.2.0` only accepts patch releases (`0.2.x`). A new minor (`0.3.0`) is never picked up automatically, so bump it explicitly. From `1.0.0` on, `^1.x.y` accepts every minor and patch.
+
+After updating, run the app's typecheck, tests and build.
+
 ## API changes
 
 Everything is imported from the package root. Treat exported names, props and the list of theme tokens as a public API:
