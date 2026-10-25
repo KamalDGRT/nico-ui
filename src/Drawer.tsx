@@ -4,11 +4,14 @@ import { X, type LucideIcon } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   DEFAULT_DRAWER_WIDTH_CLASS,
+  DRAWER_SIDE_CLASSES,
   DRAWER_TRANSITION_DURATION_MS as TRANSITION_DURATION_MS,
+  type DrawerSide,
 } from "./constants";
 
-// Right-side slide-over panel — the "full screen right hand side" pattern
-// (full width on mobile, capped on larger screens, full height). Stays
+// Slide-over panel, from the right by default — the "full screen right hand
+// side" pattern (full width on mobile, capped on larger screens, full
+// height). Pass `side="left"` for a navigation-style drawer. Stays
 // mounted slightly past `isOpen: false` so the close transition can play
 // instead of vanishing instantly.
 export function Drawer({
@@ -16,6 +19,7 @@ export function Drawer({
   onClose,
   title,
   icon: Icon,
+  side = "right",
   widthClassName = DEFAULT_DRAWER_WIDTH_CLASS,
   closeButtonClassName,
   children,
@@ -25,6 +29,8 @@ export function Drawer({
   title: string;
   // Shown in a tinted chip beside the title.
   icon?: LucideIcon;
+  // Edge the panel slides in from.
+  side?: DrawerSide;
   // Replaces the default width cap, e.g. "sm:max-w-lg".
   widthClassName?: string;
   // Added to the close button, e.g. "min-h-10 min-w-10" for a larger tap target.
@@ -76,6 +82,8 @@ export function Drawer({
 
   if (!mounted) return null;
 
+  const sideClasses = DRAWER_SIDE_CLASSES[side];
+
   return (
     <div
       className={`fixed inset-0 z-50 bg-black/40 transition-opacity duration-200 ${
@@ -88,8 +96,8 @@ export function Drawer({
         aria-modal="true"
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
-        className={`fixed inset-y-0 right-0 flex w-full flex-col border-l border-border-subtle bg-surface-elevated shadow-lg transition-transform duration-200 ${widthClassName} ${
-          visible ? "translate-x-0" : "translate-x-full"
+        className={`fixed inset-y-0 ${sideClasses.pinned} flex w-full flex-col ${sideClasses.border} border-border-subtle bg-surface-elevated shadow-lg transition-transform duration-200 ${widthClassName} ${
+          visible ? "translate-x-0" : sideClasses.closed
         }`}
       >
         <div className="flex items-center justify-between border-b border-border-subtle px-4 py-3">

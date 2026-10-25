@@ -40,6 +40,41 @@ describe("Drawer", () => {
     expect(container.querySelector("svg.lucide-bell")).not.toBeNull();
   });
 
+  it("slides in from the right by default and from the left with side=\"left\"", () => {
+    const { rerender } = render(
+      <Drawer isOpen onClose={vi.fn()} title="Test">
+        <p>Body</p>
+      </Drawer>,
+    );
+    expect(screen.getByRole("dialog")).toHaveClass("right-0", "border-l");
+    expect(screen.getByRole("dialog")).not.toHaveClass("left-0");
+    rerender(
+      <Drawer isOpen onClose={vi.fn()} title="Test" side="left">
+        <p>Body</p>
+      </Drawer>,
+    );
+    expect(screen.getByRole("dialog")).toHaveClass("left-0", "border-r");
+    expect(screen.getByRole("dialog")).not.toHaveClass("right-0", "border-l");
+  });
+
+  it("starts off-screen on its own side so it slides in, left drawer to the left", () => {
+    vi.useFakeTimers();
+    try {
+      render(
+        <Drawer isOpen onClose={vi.fn()} title="Test" side="left">
+          <p>Body</p>
+        </Drawer>,
+      );
+      expect(screen.getByRole("dialog")).toHaveClass("-translate-x-full");
+      act(() => {
+        vi.advanceTimersByTime(50);
+      });
+      expect(screen.getByRole("dialog")).toHaveClass("translate-x-0");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("uses the default width cap, and widthClassName replaces it", () => {
     const { rerender } = render(
       <Drawer isOpen onClose={vi.fn()} title="Test">
