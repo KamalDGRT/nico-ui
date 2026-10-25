@@ -6,6 +6,7 @@ Shared React UI primitives styled with Tailwind CSS theme tokens:
 - **`ConfirmModal`**: message plus Cancel and Confirm, with an optional `danger` style and an optional secondary action.
 - **`PromptModal`**: one or more labeled text inputs plus Cancel and OK. It replaces `window.prompt`.
 - **`Drawer`**: right-side slide-over panel with an enter and exit transition and an optional header icon.
+- **`SearchableSelect`**: single-select with a search box. Ids can be strings or numbers, options can have icons, and an optional `allLabel` is a pinned "no filter" choice.
 
 All components are client components (`"use client"` is included in the build).
 
@@ -56,7 +57,7 @@ The components use semantic color tokens, so each app keeps its own look. The ap
 ## Usage
 
 ```tsx
-import { ConfirmModal, Drawer, Modal, PromptModal } from "@kamaldgrt/ui";
+import { ConfirmModal, Drawer, Modal, PromptModal, SearchableSelect } from "@kamaldgrt/ui";
 
 <ConfirmModal
   isOpen={open}
@@ -78,6 +79,14 @@ import { ConfirmModal, Drawer, Modal, PromptModal } from "@kamaldgrt/ui";
   onSubmit={({ name }) => rename(name)}
   title="Rename"
   fields={[{ name: "name", label: "Name", defaultValue: current }]}
+/>
+
+<SearchableSelect
+  ariaLabel="Status"
+  options={[{ id: "open", label: "Open" }, { id: "done", label: "Done" }]}
+  value={status}
+  onChange={setStatus}
+  allLabel="Any status"
 />
 ```
 
