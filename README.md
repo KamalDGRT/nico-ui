@@ -1,0 +1,106 @@
+# @kamaldgrt/ui
+
+Shared React UI primitives styled with Tailwind CSS theme tokens:
+
+- **`Modal`**: centered dialog. Backdrop click and Escape close it, and the first field gets focus on open.
+- **`ConfirmModal`**: message plus Cancel and Confirm, with an optional `danger` style and an optional secondary action.
+- **`PromptModal`**: one or more labeled text inputs plus Cancel and OK. It replaces `window.prompt`.
+- **`Drawer`**: right-side slide-over panel with an enter and exit transition and an optional header icon.
+
+All components are client components (`"use client"` is included in the build).
+
+## Requirements
+
+- React 19
+- `lucide-react` (peer dependency, used by `Drawer`)
+- Tailwind CSS v4 in the consuming app
+
+## Install
+
+```bash
+npm i @kamaldgrt/ui
+```
+
+## Setup in the consuming app
+
+The components carry Tailwind class names, so the app's Tailwind build has to scan the package. Add this to the app's main stylesheet. The path is relative to that file:
+
+```css
+@import "tailwindcss";
+@source "../../node_modules/@kamaldgrt/ui/dist";
+```
+
+Without the `@source` line, Tailwind never sees the package's classes and the components render unstyled.
+
+### Theme tokens
+
+The components use semantic color tokens, so each app keeps its own look. The app must define these under `@theme` as `--color-*` variables:
+
+| Token | Used for |
+|---|---|
+| `surface`, `surface-elevated`, `surface-hover` | backgrounds, dialog card, hover state |
+| `foreground`, `muted` | text |
+| `border`, `border-subtle` | borders |
+| `cta`, `cta-foreground`, `cta-hover` | primary button |
+| `danger-bg`, `danger-text` | destructive button |
+| `warning-bg`, `warning-text` | drawer icon chip |
+
+```css
+@theme {
+  --color-surface: #ffffff;
+  --color-foreground: #111827;
+  /* ...and so on for every token above */
+}
+```
+
+## Usage
+
+```tsx
+import { ConfirmModal, Drawer, Modal, PromptModal } from "@kamaldgrt/ui";
+
+<ConfirmModal
+  isOpen={open}
+  onClose={() => setOpen(false)}
+  onConfirm={remove}
+  title="Delete item"
+  message="This cannot be undone."
+  confirmLabel="Delete"
+  danger
+/>
+
+<Drawer isOpen={open} onClose={() => setOpen(false)} title="New item" icon={Plus}>
+  <ItemForm />
+</Drawer>
+
+<PromptModal
+  isOpen={open}
+  onClose={() => setOpen(false)}
+  onSubmit={({ name }) => rename(name)}
+  title="Rename"
+  fields={[{ name: "name", label: "Name", defaultValue: current }]}
+/>
+```
+
+Behavior worth knowing:
+
+- A `Drawer` stays mounted for 200 ms after `isOpen` turns false so the slide-out can play. Its children remount on every open, so forms start fresh.
+- Pressing Escape inside a `Drawer` that contains an open dialog closes only the dialog.
+- `Modal` takes an optional `className` that replaces the default card styling.
+- There is no focus trap. One dialog at a time is the supported case.
+
+## Development
+
+```bash
+npm install
+npm test            # vitest (jsdom, testing-library)
+npm run typecheck   # tsc --noEmit
+npm run build       # tsup -> dist/ (ESM + .d.ts)
+```
+
+## API changes
+
+Everything is imported from the package root. Treat exported names, props and the list of theme tokens as a public API:
+
+- Additive changes (new optional props, new components, new tokens with a fallback) bump the minor version.
+- Breaking changes (removed or renamed props, new required tokens) bump the major version.
+- Tag each release (`vX.Y.Z`) to match the published version.
