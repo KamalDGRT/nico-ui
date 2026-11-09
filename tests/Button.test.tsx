@@ -10,12 +10,13 @@ describe("Button", () => {
     expect(button).toHaveClass("bg-cta", "text-cta-foreground", "font-semibold", "min-h-10");
   });
 
-  it("secondary is white with a border, danger uses the danger tokens", () => {
+  it("secondary is white with a border, danger is solid red with light text", () => {
     const { rerender } = render(<Button variant="secondary">Cancel</Button>);
     expect(screen.getByRole("button")).toHaveClass("border", "bg-surface-elevated", "text-foreground");
     expect(screen.getByRole("button")).not.toHaveClass("bg-cta");
     rerender(<Button variant="danger">Delete</Button>);
-    expect(screen.getByRole("button")).toHaveClass("bg-danger-bg", "text-danger-text");
+    expect(screen.getByRole("button")).toHaveClass("bg-danger-text", "text-cta-foreground");
+    expect(screen.getByRole("button")).not.toHaveClass("bg-danger-bg");
   });
 
   it("size sm is the compact form", () => {

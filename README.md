@@ -3,7 +3,7 @@
 Shared React UI primitives styled with Tailwind CSS theme tokens:
 
 - **`Modal`**: centered dialog. Backdrop click and Escape close it, and the first field gets focus on open.
-- **`Button`**: text button in three looks (`primary` filled CTA, `secondary` white with a border, `danger`) and two sizes (`md`, `sm`).
+- **`Button`**: text button in three looks (`primary` filled CTA, `secondary` white with a border, `danger` solid red) and two sizes (`md`, `sm`).
 - **`ConfirmModal`**: message plus Cancel and Confirm, with an optional `danger` style and an optional secondary action.
 - **`PromptModal`**: one or more labeled text inputs plus Cancel and OK. It replaces `window.prompt`.
 - **`Drawer`**: slide-over panel (right by default, `side="left"` for the left) with an enter and exit transition and an optional header icon.

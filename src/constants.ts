@@ -28,7 +28,7 @@ export const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary: "bg-cta text-cta-foreground hover:bg-cta-hover",
   secondary:
     "border border-border bg-surface-elevated text-foreground hover:bg-surface-hover",
-  danger: "bg-danger-bg text-danger-text hover:opacity-90",
+  danger: "bg-danger-text text-cta-foreground hover:brightness-90",
 };
 
 export const BUTTON_SIZE_CLASSES: Record<ButtonSize, string> = {
