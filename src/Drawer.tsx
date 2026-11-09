@@ -1,13 +1,13 @@
 "use client";
 
 import { X, type LucideIcon } from "lucide-react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import {
   DEFAULT_DRAWER_WIDTH_CLASS,
   DRAWER_SIDE_CLASSES,
-  DRAWER_TRANSITION_DURATION_MS as TRANSITION_DURATION_MS,
   type DrawerSide,
 } from "./constants";
+import { useOverlay } from "./useOverlay";
 
 // Slide-over panel, from the right by default — the "full screen right hand
 // side" pattern (full width on mobile, capped on larger screens, full
@@ -37,48 +37,7 @@ export function Drawer({
   closeButtonClassName?: string;
   children: ReactNode;
 }) {
-  const [mounted, setMounted] = useState(isOpen);
-  const [visible, setVisible] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setMounted(true);
-      const raf = requestAnimationFrame(() => setVisible(true));
-      return () => cancelAnimationFrame(raf);
-    }
-    setVisible(false);
-    const timer = setTimeout(() => setMounted(false), TRANSITION_DURATION_MS);
-    return () => clearTimeout(timer);
-  }, [isOpen]);
-
-  // Separate from the Escape-key effect below: `onClose` is typically an
-  // inline arrow function from the caller, a new reference on every
-  // keystroke-triggered re-render — if this ran on every `onClose` identity
-  // change too, it would steal focus back to the first field on every
-  // keystroke instead of only once when the drawer actually opens. Queries
-  // within contentRef (the body, below the header) only, not the close
-  // button, so it focuses the first real field rather than the ✕.
-  useEffect(() => {
-    if (!isOpen) return;
-    contentRef.current
-      ?.querySelector<HTMLElement>("input, button, textarea, select")
-      ?.focus();
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key !== "Escape") return;
-      // A modal opened inside the drawer closes itself on Escape; the
-      // drawer stays.
-      if (contentRef.current?.querySelector('[role="dialog"]')) return;
-      onClose();
-    }
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  const { mounted, visible, contentRef } = useOverlay(isOpen, onClose);
 
   if (!mounted) return null;
 

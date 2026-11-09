@@ -15,3 +15,7 @@ export const DRAWER_SIDE_CLASSES: Record<
   right: { pinned: "right-0", border: "border-l", closed: "translate-x-full" },
   left: { pinned: "left-0", border: "border-r", closed: "-translate-x-full" },
 };
+
+// Tailwind class: width of the floating card on larger screens (on narrow
+// screens it is the viewport minus the 1 rem gap on each side).
+export const DEFAULT_FLOATING_CARD_WIDTH_CLASS = "sm:w-[34rem]";

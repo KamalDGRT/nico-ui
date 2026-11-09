@@ -2,11 +2,12 @@
 
 ## What this is
 
-`@kamaldgrt/ui`: shared React UI primitives (`Modal`, `ConfirmModal`, `PromptModal`, `Drawer`, `SearchableSelect`), published to npm as compiled ESM + `.d.ts`. See [README.md](README.md) for usage and the theme-token contract.
+`@kamaldgrt/ui`: shared React UI primitives (`Modal`, `ConfirmModal`, `PromptModal`, `Drawer`, `FloatingCard`, `SearchableSelect`), published to npm as compiled ESM + `.d.ts`. See [README.md](README.md) for usage and the theme-token contract.
 
 ## Layout
 
-- `src/Modal.tsx`, `ConfirmModal.tsx`, `PromptModal.tsx`, `Drawer.tsx`, `SearchableSelect.tsx`: one component per file
+- `src/Modal.tsx`, `ConfirmModal.tsx`, `PromptModal.tsx`, `Drawer.tsx`, `FloatingCard.tsx`, `SearchableSelect.tsx`: one component per file
+- `src/useOverlay.ts`: internal hook (mount/exit transition, first-field focus, Escape) shared by `Drawer` and `FloatingCard`; not exported from `index.ts`
 - `src/constants.ts`: named constants (drawer transition duration)
 - `src/index.ts`: the only public entry point; everything exported there is public API
 - `tests/`: one test file per component
