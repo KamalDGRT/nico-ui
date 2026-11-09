@@ -78,6 +78,34 @@ describe("FloatingCard", () => {
     expect(screen.getByText("Body").parentElement).not.toContainElement(save);
   });
 
+  it("classNames replaces only the parts it names and keeps the rest", () => {
+    render(
+      <FloatingCard
+        isOpen
+        onClose={vi.fn()}
+        title="Test"
+        subtitle="Sub"
+        footer={<button>Save</button>}
+        classNames={{
+          card: "rounded-none bg-white",
+          title: "text-lg",
+          body: "p-2",
+          footer: "px-1",
+        }}
+      >
+        <p>Body</p>
+      </FloatingCard>,
+    );
+    const card = screen.getByRole("dialog");
+    expect(card).toHaveClass("rounded-none", "bg-white", "right-4", "top-4", "flex-col");
+    expect(card).not.toHaveClass("rounded-[14px]", "shadow-xl");
+    expect(screen.getByText("Test")).toHaveClass("text-lg");
+    expect(screen.getByText("Test")).not.toHaveClass("font-bold");
+    expect(screen.getByText("Sub")).toHaveClass("text-[13px]", "text-muted");
+    expect(screen.getByText("Body").parentElement).toHaveClass("p-2", "overflow-y-auto");
+    expect(screen.getByRole("button", { name: "Save" }).parentElement).toHaveClass("px-1", "flex");
+  });
+
   it("closeButtonClassName is added to the Close button without dropping its defaults", () => {
     render(
       <FloatingCard isOpen onClose={vi.fn()} title="Test" closeButtonClassName="min-h-10 min-w-10">

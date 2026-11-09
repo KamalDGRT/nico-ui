@@ -48,4 +48,22 @@ describe("Button", () => {
     render(<Button type="submit">Send</Button>);
     expect(screen.getByRole("button")).toHaveAttribute("type", "submit");
   });
+
+  it("variantClassName replaces the variant's colors, keeping the base and size", () => {
+    render(
+      <Button variant="danger" variantClassName="bg-black text-white">
+        Delete
+      </Button>,
+    );
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass("bg-black", "text-white", "font-semibold", "min-h-10");
+    expect(button).not.toHaveClass("bg-danger-text");
+  });
+
+  it("sizeClassName replaces the size's height and padding, keeping the colors", () => {
+    render(<Button sizeClassName="min-h-12 px-6 text-base">Big</Button>);
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass("min-h-12", "px-6", "bg-cta");
+    expect(button).not.toHaveClass("min-h-10");
+  });
 });

@@ -2,7 +2,11 @@
 
 import { X } from "lucide-react";
 import type { ReactNode } from "react";
-import { DEFAULT_FLOATING_CARD_WIDTH_CLASS } from "./constants";
+import {
+  DEFAULT_FLOATING_CARD_WIDTH_CLASS,
+  FLOATING_CARD_CLASSES,
+  type FloatingCardPart,
+} from "./constants";
 import { useOverlay } from "./useOverlay";
 
 // A drawer that floats: a rounded card inset from the top-right corner of
@@ -19,6 +23,7 @@ export function FloatingCard({
   footer,
   widthClassName = DEFAULT_FLOATING_CARD_WIDTH_CLASS,
   closeButtonClassName,
+  classNames,
   children,
 }: {
   isOpen: boolean;
@@ -32,11 +37,18 @@ export function FloatingCard({
   widthClassName?: string;
   // Added to the close button, e.g. "min-h-10 min-w-10" for a larger tap target.
   closeButtonClassName?: string;
+  // Replaces the default classes of one part (card, header, title,
+  // subtitle, closeButton, body, footer), so the look can be changed from
+  // the calling app without a new release of this package. Parts you omit
+  // keep their defaults.
+  classNames?: Partial<Record<FloatingCardPart, string>>;
   children: ReactNode;
 }) {
   const { mounted, visible, contentRef } = useOverlay(isOpen, onClose);
 
   if (!mounted) return null;
+
+  const part = { ...FLOATING_CARD_CLASSES, ...classNames };
 
   return (
     <div
@@ -50,33 +62,33 @@ export function FloatingCard({
         aria-modal="true"
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
-        className={`fixed right-4 top-4 flex max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] flex-col overflow-hidden rounded-[14px] border border-border-subtle bg-surface-elevated shadow-xl transition duration-200 ${widthClassName} ${
+        className={`fixed right-4 top-4 flex max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] flex-col overflow-hidden transition duration-200 ${part.card} ${widthClassName} ${
           visible ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0"
         }`}
       >
-        <div className="flex min-h-[60px] items-center justify-between gap-2 border-b border-border-subtle py-2 pl-[18px] pr-2.5 sm:pl-6">
+        <div className={`flex items-center justify-between gap-2 ${part.header}`}>
           <div className="flex min-w-0 flex-col">
-            <p className="break-words text-[17px] font-bold leading-snug text-foreground">
+            <p className={part.title}>
               {title}
             </p>
             {subtitle && (
-              <span className="break-words text-[13px] text-muted">{subtitle}</span>
+              <span className={part.subtitle}>{subtitle}</span>
             )}
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className={`inline-flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-lg text-muted hover:bg-surface-hover hover:text-foreground ${closeButtonClassName ?? ""}`}
+            className={`inline-flex shrink-0 items-center justify-center ${part.closeButton} ${closeButtonClassName ?? ""}`}
           >
             <X aria-hidden className="h-4 w-4" />
           </button>
         </div>
-        <div ref={contentRef} className="min-h-0 flex-1 overflow-y-auto px-[18px] pb-5 pt-[18px] sm:px-6 sm:pb-6 sm:pt-[22px]">
+        <div ref={contentRef} className={`min-h-0 flex-1 overflow-y-auto ${part.body}`}>
           {children}
         </div>
         {footer && (
-          <div className="flex flex-wrap items-center gap-2 border-t border-border-subtle bg-surface-elevated px-[18px] py-3 sm:px-6 sm:py-3.5">
+          <div className={`flex flex-wrap items-center gap-2 ${part.footer}`}>
             {footer}
           </div>
         )}
