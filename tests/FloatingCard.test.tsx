@@ -26,12 +26,13 @@ describe("FloatingCard", () => {
   });
 
   it("omits the subtitle line when none is given", () => {
-    const { container } = render(
+    render(
       <FloatingCard isOpen onClose={vi.fn()} title="Test">
         <p>Body</p>
       </FloatingCard>,
     );
-    expect(container.querySelector("span.text-xs")).toBeNull();
+    const header = screen.getByText("Test").parentElement!;
+    expect(header.children).toHaveLength(1);
   });
 
   it("floats inset from the top-right corner, not pinned full height", () => {
@@ -41,7 +42,7 @@ describe("FloatingCard", () => {
       </FloatingCard>,
     );
     const card = screen.getByRole("dialog");
-    expect(card).toHaveClass("right-4", "top-4", "rounded-xl", "max-h-[calc(100vh-2rem)]");
+    expect(card).toHaveClass("right-4", "top-4", "rounded-[14px]", "max-h-[calc(100vh-2rem)]");
     expect(card).not.toHaveClass("inset-y-0", "right-0");
   });
 
@@ -51,14 +52,14 @@ describe("FloatingCard", () => {
         <p>Body</p>
       </FloatingCard>,
     );
-    expect(screen.getByRole("dialog")).toHaveClass("sm:w-[34rem]");
+    expect(screen.getByRole("dialog")).toHaveClass("sm:w-[540px]");
     rerender(
       <FloatingCard isOpen onClose={vi.fn()} title="Test" widthClassName="sm:w-[28rem]">
         <p>Body</p>
       </FloatingCard>,
     );
     expect(screen.getByRole("dialog")).toHaveClass("sm:w-[28rem]");
-    expect(screen.getByRole("dialog")).not.toHaveClass("sm:w-[34rem]");
+    expect(screen.getByRole("dialog")).not.toHaveClass("sm:w-[540px]");
   });
 
   it("pins the footer outside the scrolling body, only when given", () => {

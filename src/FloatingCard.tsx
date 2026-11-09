@@ -40,7 +40,7 @@ export function FloatingCard({
 
   return (
     <div
-      className={`fixed inset-0 z-50 bg-black/40 transition-opacity duration-200 ${
+      className={`fixed inset-0 z-50 bg-black/30 transition-opacity duration-200 ${
         visible ? "opacity-100" : "opacity-0"
       }`}
       onClick={onClose}
@@ -50,33 +50,33 @@ export function FloatingCard({
         aria-modal="true"
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
-        className={`fixed right-4 top-4 flex max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] flex-col overflow-hidden rounded-xl border border-border-subtle bg-surface-elevated shadow-lg transition duration-200 ${widthClassName} ${
+        className={`fixed right-4 top-4 flex max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] flex-col overflow-hidden rounded-[14px] border border-border-subtle bg-surface-elevated shadow-xl transition duration-200 ${widthClassName} ${
           visible ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0"
         }`}
       >
-        <div className="flex min-h-14 items-center justify-between gap-2 border-b border-border-subtle py-2 pl-5 pr-2.5">
+        <div className="flex min-h-[60px] items-center justify-between gap-2 border-b border-border-subtle py-2 pl-[18px] pr-2.5 sm:pl-6">
           <div className="flex min-w-0 flex-col">
-            <p className="break-words text-sm font-semibold text-foreground">
+            <p className="break-words text-[17px] font-bold leading-snug text-foreground">
               {title}
             </p>
             {subtitle && (
-              <span className="break-words text-xs text-muted">{subtitle}</span>
+              <span className="break-words text-[13px] text-muted">{subtitle}</span>
             )}
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className={`inline-flex shrink-0 items-center justify-center rounded p-1.5 text-muted hover:bg-surface-hover hover:text-foreground ${closeButtonClassName ?? ""}`}
+            className={`inline-flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-lg text-muted hover:bg-surface-hover hover:text-foreground ${closeButtonClassName ?? ""}`}
           >
             <X aria-hidden className="h-4 w-4" />
           </button>
         </div>
-        <div ref={contentRef} className="min-h-0 flex-1 overflow-y-auto p-5">
+        <div ref={contentRef} className="min-h-0 flex-1 overflow-y-auto px-[18px] pb-5 pt-[18px] sm:px-6 sm:pb-6 sm:pt-[22px]">
           {children}
         </div>
         {footer && (
-          <div className="flex flex-wrap items-center gap-2 border-t border-border-subtle bg-surface-elevated px-5 py-3.5">
+          <div className="flex flex-wrap items-center gap-2 border-t border-border-subtle bg-surface-elevated px-[18px] py-3 sm:px-6 sm:py-3.5">
             {footer}
           </div>
         )}

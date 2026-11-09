@@ -18,4 +18,20 @@ export const DRAWER_SIDE_CLASSES: Record<
 
 // Tailwind class: width of the floating card on larger screens (on narrow
 // screens it is the viewport minus the 1 rem gap on each side).
-export const DEFAULT_FLOATING_CARD_WIDTH_CLASS = "sm:w-[34rem]";
+export const DEFAULT_FLOATING_CARD_WIDTH_CLASS = "sm:w-[540px]";
+
+export type ButtonVariant = "primary" | "secondary" | "danger";
+export type ButtonSize = "md" | "sm";
+
+// Tailwind classes per Button look. Colors are theme tokens only.
+export const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
+  primary: "bg-cta text-cta-foreground hover:bg-cta-hover",
+  secondary:
+    "border border-border bg-surface-elevated text-foreground hover:bg-surface-hover",
+  danger: "bg-danger-bg text-danger-text hover:opacity-90",
+};
+
+export const BUTTON_SIZE_CLASSES: Record<ButtonSize, string> = {
+  md: "min-h-10 px-[18px] text-sm",
+  sm: "min-h-[34px] px-3.5 text-[13px]",
+};
