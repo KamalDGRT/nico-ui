@@ -51,11 +51,31 @@ export type ButtonSize = "md" | "sm";
 
 // Tailwind classes per Button look. Colors are theme tokens only.
 export const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "bg-cta text-cta-foreground hover:bg-cta-hover",
+  primary: "bg-cta text-cta-foreground",
   secondary:
-    "border border-border bg-surface-elevated text-foreground hover:bg-surface-hover",
-  danger: "bg-danger-text text-cta-foreground hover:brightness-90",
+    "border border-border bg-surface-elevated text-foreground transition-colors hover:border-foreground/60",
+  danger: "bg-danger-text text-cta-foreground",
 };
+
+// Hover look when the ripple is switched off (`ripple={false}`): the same
+// change the ripple paints, applied at once.
+export const BUTTON_HOVER_CLASSES: Record<ButtonVariant, string> = {
+  primary: "hover:bg-cta-hover",
+  secondary: "hover:bg-surface-hover",
+  danger: "hover:brightness-90",
+};
+
+// Fill of the hover ripple per variant.
+export const BUTTON_RIPPLE_CLASSES: Record<ButtonVariant, string> = {
+  primary: "bg-cta-hover",
+  secondary: "bg-surface-hover",
+  danger: "bg-black/20",
+};
+
+// The ripple grows from where the pointer entered to cover the button, then
+// fades when the pointer leaves.
+export const RIPPLE_GROW_MS = 450;
+export const RIPPLE_FADE_MS = 250;
 
 export const BUTTON_SIZE_CLASSES: Record<ButtonSize, string> = {
   md: "min-h-10 px-[18px] text-sm",
